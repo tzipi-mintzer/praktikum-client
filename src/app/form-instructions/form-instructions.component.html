@@ -1,0 +1,5 @@
+<div>
+<h1 *ngIf="!myUser.FirstName&&!myUser.LastName">שלום</h1>
+<h1 *ngIf="myUser.FirstName||myUser.LastName">שלום  {{myUser.FirstName}}  {{myUser.LastName}}</h1>
+<p>יש למלא את הטופס...</p>
+</div>

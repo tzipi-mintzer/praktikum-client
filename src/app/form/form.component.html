@@ -1,0 +1,72 @@
+<form (ngSubmit)="save(form)" #form="ngForm" id="f1">
+    <mat-form-field appearance="fill">
+        <mat-label>שם פרטי</mat-label>
+        <input matInput placeholder="ישראל" [(ngModel)]="myUser.FirstName" name="firstName" #firstName="ngModel"
+            maxlength="10" pattern="[a-zA-Zא-ת]*" required />
+    </mat-form-field>
+    <br />
+    <p *ngIf="firstName.touched&&firstName.invalid" class="errors">שם לא תקין</p>
+    <mat-form-field appearance="fill">
+        <mat-label>שם משפחה</mat-label>
+        <input matInput placeholder="ישראלי" [(ngModel)]="myUser.LastName" name="lastName" maxlength="10"
+            #lastName="ngModel" pattern="[a-zA-Zא-ת]*" required />
+    </mat-form-field>
+    <br />
+    <p *ngIf="lastName.touched&&lastName.invalid" class="errors">שם משפחה לא תקין</p>
+    <mat-form-field appearance="fill">
+        <mat-label>מספר זהות</mat-label>
+        <input matInput placeholder="123456789" [(ngModel)]="myUser.Tz" name="tz" #tzUser="ngModel" required>
+    </mat-form-field>
+    <br/>
+    <p *ngIf="tzUser.touched&&!isValidIsraeliID(tzUser.value)" class="errors">ת.ז. לא תקינה</p>
+    <mat-form-field appearance="fill">
+        <mat-label>תאריך לידה</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="myUser.BirthDate" name="birthDate" #birthDate="ngModel"
+        max="{{today}}" required />
+
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <br />
+    <p *ngIf="birthDate.touched&&birthDate.invalid" class="errors">תאריך לידה לא תקין</p>
+    <label>זכר</label>
+    <input type="radio" value="0" name="gender" [(ngModel)]="myUser.Gender" required />
+    <label>נקבה</label>
+    <input type="radio" value="1" name="gender" [(ngModel)]="myUser.Gender" required />
+    <br />
+    <mat-form-field appearance="fill">
+        <mat-label>קופת חולים</mat-label>
+        <mat-select [(ngModel)]="myUser.HMO" name="HMO" required>
+            <mat-option value="0">מכבי</mat-option>
+            <mat-option value="1">מאוחדת</mat-option>
+            <mat-option value="2">כללית</mat-option>
+            <mat-option value="3">לאומית</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br />
+    <h4>ילדים</h4>
+    <form (ngSubmit)="addChild(children)" #children="ngForm">
+        <mat-form-field appearance="fill">
+            <mat-label>שם</mat-label>
+            <input matInput placeholder="ישראל" [(ngModel)]="myChild.FirstName" name="name" maxlength="10"
+                pattern="[a-zA-Zא-ת]*" required />
+        </mat-form-field>
+        <br />
+        <mat-form-field appearance="fill">
+            <mat-label>תאריך לידה</mat-label>
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="myChild.BirthDate" required name="childBirthDate"
+                max="{{today}}" #childBirthDate="ngModel" required />
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <br />
+        <mat-form-field appearance="fill">
+            <mat-label>מספר זהות</mat-label>
+            <input matInput placeholder="123456789" [(ngModel)]="myChild.Tz" name="childTz" #childTz required>
+        </mat-form-field>
+        <br />
+        <input type="submit" value="הוסף ילד" [disabled]="children.invalid||!isValidIsraeliID(childTz.value)" />
+    </form>
+
+    <input type="submit" value="שליחה" [disabled]="form.invalid||!isValidIsraeliID(tzUser.value)" />
+</form>
